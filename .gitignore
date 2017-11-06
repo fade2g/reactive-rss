@@ -3,6 +3,9 @@
 #IDE
 /.idea
 
+#Environments
+.env.development
+
 # dependencies
 /node_modules
 

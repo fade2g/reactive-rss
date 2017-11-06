@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Button, Form} from "semantic-ui-react";
+import {Button, Form, Message} from "semantic-ui-react";
+import {login} from "../../api/api";
 
 
 class Settings extends Component {
@@ -7,23 +8,54 @@ class Settings extends Component {
   state = {
     serverUrl: process.env.REACT_APP_DEFAULT_HOST_URL || '',
     userName: process.env.REACT_APP_DEFAULT_USER_NAME || '',
-    password: ''
+    password: process.env.REACT_APP_DEFAULT_PASSWORD || '',
+    testResult: undefined,
+    testError: false,
+    sessionId: undefined,
+    loading: false,
   };
 
+  clearSessionState() {
+    this.setState({
+      testResult: false,
+      testError: false,
+      sessionId: undefined,
+    })
+  }
+
   handleChange = (event) => {
-    console.log(event.target.name + ", " + event.target.value);
     this.setState({
       [event.target.name]: event.target.value
-    })
+    });
+    this.clearSessionState()
+  };
 
+  handleTest = () => {
+    const {serverUrl, userName, password} = this.state;
+    this.setState({loading: true});
+    login(serverUrl, userName, password)
+      .then(data => {
+        this.setState({
+          testResult: true,
+          testError: false,
+          sessionId: data.session_id,
+          loading: false
+        })
+      })
+      .catch(() => {
+        this.setState({
+          testError: true,
+          loading: false
+        })
+      })
   };
 
   render() {
-    const {serverUrl, userName, password} = this.state;
+    const {serverUrl, userName, password, testResult, sessionId, loading, testError} = this.state;
     const submitActive = serverUrl && userName && password;
     return (
       <div>
-        <Form>
+        <Form loading={loading}>
           <Form.Field>
             <label>Server URL</label>
             <input type="text"
@@ -54,14 +86,21 @@ class Settings extends Component {
                    required/>
           </Form.Field>
           <Form.Group>
-            <Button disabled={!submitActive}>Test Connection</Button>
-            <Button type='submit' disabled={!submitActive}>Save</Button>
+            <Button disabled={!submitActive || sessionId !== undefined} onClick={this.handleTest}>Test Connection</Button>
+            <Button disabled={!testResult} type='submit'>Save</Button>
           </Form.Group>
         </Form>
+        {testError && <Message error={true}>
+          <Message.Header>
+            Test Failed
+          </Message.Header>
+          <p>
+            Testing connection to server failed. Check that URL, username and password are correct and the server is available.
+          </p>
+        </Message>}
       </div>
     )
   }
 }
-
 
 export default Settings;

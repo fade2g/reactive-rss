@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Menu, Segment} from "semantic-ui-react";
-import Settings from "../views/settings";
+import SettingsView from "../views/settings/SettingsView";
 
 class MainNavigation extends Component {
 
   state = { activeItem: 'settings' };
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
@@ -19,8 +19,8 @@ class MainNavigation extends Component {
           </Menu.Menu>
         </Menu>
 
-        <Segment>
-          {'settings'=== activeItem && <Settings/>}
+        <Segment basic={true}>
+          {'settings'=== activeItem && <SettingsView/>}
         </Segment>
       </div>
     )

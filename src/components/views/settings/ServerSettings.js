@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Button, Form, Message} from "semantic-ui-react";
-import {login} from "../../api/api";
+import {Button, Form, Message, Segment} from "semantic-ui-react";
+import {login} from "../../../api/api";
 
 
-class Settings extends Component {
+class ServerSettings extends Component {
 
   state = {
     serverUrl: process.env.REACT_APP_DEFAULT_HOST_URL || '',
@@ -54,7 +54,7 @@ class Settings extends Component {
     const {serverUrl, userName, password, testResult, sessionId, loading, testError} = this.state;
     const submitActive = serverUrl && userName && password;
     return (
-      <div>
+      <Segment color='orange'>
         <Form loading={loading}>
           <Form.Field>
             <label>Server URL</label>
@@ -98,9 +98,9 @@ class Settings extends Component {
             Testing connection to server failed. Check that URL, username and password are correct and the server is available.
           </p>
         </Message>}
-      </div>
+      </Segment>
     )
   }
 }
 
-export default Settings;
+export default ServerSettings;

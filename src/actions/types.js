@@ -1,0 +1,1 @@
+export const STORE_SESSION_ID='STORE_SESSION_ID';

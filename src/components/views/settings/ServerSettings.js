@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Form, Message, Segment} from "semantic-ui-react";
 import {login} from "../../../api/api";
+import {connect} from "react-redux";
+import {storeSessionIdAction} from "../../../actions/sessionHandling";
+import {bindActionCreators} from "redux";
 
 
 class ServerSettings extends Component {
@@ -50,12 +53,16 @@ class ServerSettings extends Component {
       })
   };
 
+  handleSubmit = () => {
+    this.props.storeSessionId(this.state.sessionId);
+  };
+
   render() {
     const {serverUrl, userName, password, testResult, sessionId, loading, testError} = this.state;
     const submitActive = serverUrl && userName && password;
     return (
       <Segment color='orange'>
-        <Form loading={loading}>
+        <Form loading={loading} onSubmit={this.handleSubmit}>
           <Form.Field>
             <label>Server URL</label>
             <input type="text"
@@ -86,7 +93,7 @@ class ServerSettings extends Component {
                    required/>
           </Form.Field>
           <Form.Group>
-            <Button disabled={!submitActive || sessionId !== undefined} onClick={this.handleTest}>Test Connection</Button>
+            <Button disabled={!submitActive || sessionId !== undefined} type="button" onClick={this.handleTest}>Test Connection</Button>
             <Button disabled={!testResult} type='submit'>Save</Button>
           </Form.Group>
         </Form>
@@ -103,4 +110,11 @@ class ServerSettings extends Component {
   }
 }
 
-export default ServerSettings;
+function mapDispatchToProps(dispatch) {
+  return {
+    storeSessionId: bindActionCreators(storeSessionIdAction, dispatch)
+  }
+}
+
+export default connect(null, mapDispatchToProps)(ServerSettings);
+// export default ServerSettings;

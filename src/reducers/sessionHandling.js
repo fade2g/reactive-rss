@@ -6,7 +6,8 @@ export function session(state = {}, action) {
     case STORE_SESSION_ID:
       return {
         ...state,
-        sessionId: payload
+        sessionId: payload.sessionId,
+        serverUrl: payload.serverUrl
       };
     default:
       return state;

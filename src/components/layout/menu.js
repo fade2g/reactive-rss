@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Menu, Segment} from "semantic-ui-react";
 import SettingsView from "../views/settings/SettingsView";
+import CategoriesView from "../views/categories/categories";
 
 class MainNavigation extends Component {
 
@@ -21,6 +22,9 @@ class MainNavigation extends Component {
 
         <Segment basic={true}>
           {'settings'=== activeItem && <SettingsView/>}
+        </Segment>
+        <Segment basic={true}>
+          {'home'=== activeItem && <CategoriesView/>}
         </Segment>
       </div>
     )

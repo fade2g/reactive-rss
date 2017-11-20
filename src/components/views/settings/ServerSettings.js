@@ -54,7 +54,7 @@ class ServerSettings extends Component {
   };
 
   handleSubmit = () => {
-    this.props.storeSessionId(this.state.sessionId);
+    this.props.storeSessionId(this.state.sessionId, this.state.serverUrl);
   };
 
   render() {

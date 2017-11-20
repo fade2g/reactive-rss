@@ -1,3 +1,10 @@
+import store from "../store/index";
+import {handleError, handleJson, handleOkNok} from "./helper";
+
+const API_SUFFIX = '/api/';
+const myStore = store;
+
+
 const basicConfig = {
   headers: {
     'Accept': 'application/json',
@@ -14,7 +21,17 @@ const buildContent = (payload) => {
   }
 };
 
-const buildUrl = url => url + '/api/';
+const buildSessionContent = (payload) => {
+  const {sessionId} = myStore.getState().session;
+  return buildContent({
+    ...payload,
+    sid: sessionId
+  })
+};
+
+const buildUrl = url => url + API_SUFFIX;
+
+const buildSessionUrl = () => buildUrl(myStore.getState().session.serverUrl);
 
 export const login = (url, username, password) => {
   return fetch(buildUrl(url), buildContent({op: 'login', user: username, password}))
@@ -27,4 +44,13 @@ export const login = (url, username, password) => {
       }
       return response.content;
     });
+};
+
+export const loadCategories = () => {
+  console.log(myStore.getState());
+  return fetch(buildSessionUrl(), buildSessionContent({op: 'getCategories'}))
+    .then(handleOkNok)
+    .then(handleJson)
+    .then(response => response)
+    .catch(handleError)
 };

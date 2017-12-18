@@ -117,4 +117,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(null, mapDispatchToProps)(ServerSettings);
-// export default ServerSettings;

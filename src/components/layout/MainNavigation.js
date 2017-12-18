@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Menu, Segment} from "semantic-ui-react";
 import SettingsView from "../views/settings/SettingsView";
 import CategoriesView from "../views/categories/categories";
+import DevToolView from '../devtools/DevToolView';
 
 class MainNavigation extends Component {
 
@@ -26,6 +27,7 @@ class MainNavigation extends Component {
         <Segment basic={true}>
           {'home'=== activeItem && <CategoriesView/>}
         </Segment>
+        <DevToolView />
       </div>
     )
   }
